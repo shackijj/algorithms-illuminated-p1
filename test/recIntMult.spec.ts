@@ -4,12 +4,12 @@ describe('recIntMult', () => {
     function checkResult({a, b, result}: {a: string, b: string, result: string}) {
         expect(underTest(a, b)).toEqual(result);
     }
-    it('returns the sum of two integers presented as strings', () => {
+    it('multiplies two integers presented as strings', () => {
         [
             {
-                a: '1',
-                b: '2',
-                result: '2'
+                a: '11',
+                b: '22',
+                result: '242'
             }
         ].forEach(checkResult);
     });
