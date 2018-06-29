@@ -16,15 +16,27 @@ export default function greatSchoolAdd(a: string, b: string): string {
             }
         } else if (aIdx > -1) {
             if (rem > 0) {
-                result.unshift(parseInt(a[aIdx]) + rem)
-                rem = 0;
+                const sum = parseInt(a[aIdx]) + rem;
+                if (sum >= 10) {
+                    result.unshift(sum - 10)
+                    rem = 1;
+                } else {
+                    rem = 0;
+                    result.unshift(sum)
+                }
             } else {
                 result.unshift(parseInt(a[aIdx]))
             }
         } else if (bIdx > -1) {
             if (rem > 0) {
-                result.unshift(parseInt(b[bIdx] + rem));
-                rem = 0;
+                const sum = parseInt(b[bIdx]) + rem;
+                if (sum >= 10) {
+                    result.unshift(sum - 10)
+                    rem = 1;
+                } else {
+                    rem = 0
+                    result.unshift(sum)
+                }
             } else {
                 result.unshift(parseInt(b[bIdx]));
             }
