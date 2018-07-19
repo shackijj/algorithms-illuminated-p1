@@ -30,15 +30,15 @@ export default function mergeSort(input: number[]): number[] {
             return [input[0], input[1]];
         }
     } else {
-        let unprimed = length % 2 === 0 ? null : [input[length - 1]];
-        const a = unprimed === null ? input.slice(0, length / 2) : input.slice(0, (length - 1) / 2);
-        const b = unprimed === null ? input.slice(length / 2, length) : input.slice((length - 1) / 2, length - 1);
+        let uneven = length % 2 === 0 ? null : [input[length - 1]];
+        const a = uneven === null ? input.slice(0, length / 2) : input.slice(0, (length - 1) / 2);
+        const b = uneven === null ? input.slice(length / 2, length) : input.slice((length - 1) / 2, length - 1);
  
         const sortedA = mergeSort(a);
         const sortedB = mergeSort(b);
         const result = merge(sortedA, sortedB);
-        if (unprimed) {
-            return merge(result, unprimed);
+        if (uneven) {
+            return merge(result, uneven);
         } else {
             return result;
         }
