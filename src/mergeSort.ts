@@ -6,13 +6,19 @@ function merge(sortedA: number[], sortedB: number[]) {
             result[i] = sortedB[k];
             k++;
             if (k === sortedB.length) {
-                return result.concat(sortedA.slice(j, sortedA.length))
+                for (let m = j; m < sortedA.length; m++) {
+                    result.push(sortedA[m]);
+                }
+                break;
             }
         } else {
             result[i] = sortedA[j];
             j++;
             if (j === sortedA.length) {
-                return result.concat(sortedB.slice(k, sortedB.length))
+                for (let m = k; m < sortedB.length; m++) {
+                    result.push(sortedB[m]);
+                }
+                break;
             }
         }
     }
