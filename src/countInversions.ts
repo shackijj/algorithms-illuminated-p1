@@ -1,22 +1,25 @@
-import mergeSort from "./mergeSort";
-
 export type TInversions = {count: number, array: number[]};
 
 function mergeSortedArraysAndCount(a: number[], b: number[]): TInversions {
     const array = [];
     const length = a.length + b.length;
     let count = 0;
-    for(let i = 0, j = 0, c = 0; c < length; c++) {
-        if (a[i] > b[j]) {
-            array[c] = b[j];
-            j++;
-            count += a.length - i;
-        } else if (a[i] === b[j]) {
-            array[c] = b[j];
-            j++
+    for(let ai = 0, bi = 0, c = 0; c < length; c++) {
+        if (ai < a.length && bi < b.length) {
+            if (a[ai] > b[bi]) {
+                array[c] = b[bi];
+                count += a.length - ai;
+                bi++
+            } else {
+                array[c] = a[ai];
+                ai++;
+            }
+        } else if (ai === a.length) {
+            array[c] = b[bi];
+            bi++;
         } else {
-            array[c] = a[i];
-            i++;
+            array[c] = a[ai];
+            ai++;
         }
     }
     return {array, count};
