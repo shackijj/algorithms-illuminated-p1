@@ -21,5 +21,17 @@ describe('countInversions', () => {
             input: [5, 4, 3, 1],
             output: {array: [1, 3, 4, 5], count: 6}
         },
+        {
+            input: [5, 4, 3],
+            output: {array: [3, 4, 5], count: 3}
+        },
+        {
+            input: [5, 4, 3, 3, 1],
+            output: {array: [1, 3, 3, 4, 5], count: 9}
+        },
+        {
+            input: [5, 4, 1, 3, 9, 12],
+            output: {array: [1, 3, 4, 5, 9, 12], count: 5}
+        },
     ].forEach(checkOutput);
 });

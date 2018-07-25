@@ -25,14 +25,27 @@ function mergeSortedArraysAndCount(a: number[], b: number[]): TInversions {
     return {array, count};
 }
 
+function bubbleSortAndCount(array: number[]): TInversions {
+    const result = array.concat([]);
+    let count = 0;
+
+    for(let max = result.length; max > 0; max--) {
+        for(let i = 0; i < max - 1; i++) {
+            if(result[i] > result[i + 1]) {
+                const temp = result[i + 1];
+                result[i + 1] = result[i];
+                result[i] = temp;
+                count++
+            }
+        }
+    }
+    return {array: result, count};
+}
+
 export default function mergeSortAndCount(array: number[]): TInversions {
     const length = array.length;
-    if (length === 2) {
-        if (array[0] > array[1]) {
-            return {count: 1, array: [array[1], array[0]]};
-        } else {
-            return {count: 0, array: array.concat([])};
-        }
+    if (length <= 3) {
+        return bubbleSortAndCount(array);
     } else {
         const {count: countX, array: x} = mergeSortAndCount(array.slice(0, length / 2));
         const {count: countY, array: y} = mergeSortAndCount(array.slice(length / 2, length))
