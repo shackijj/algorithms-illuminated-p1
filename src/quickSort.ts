@@ -16,19 +16,24 @@ function partitionArray(A: number[], l: number, r: number): number {
     swap(A, l, i - 1);
     return i - 1;
 }
+function choosePivot(A: number[], l: number, r: number) {
+    const index = Math.floor(Math.random() * (r - l)) + l;
+    swap(A, l, index);
+}
 
-function quickSortImp(A: number[], l: number, len: number) {
-    if (len <= 1) {
+function quickSortImp(A: number[], l: number, r: number) {
+    if (l >= r) {
         return;
     }
-    const pIdx = partitionArray(A, l, len - 1);
-    quickSortImp(A, l, pIdx - l);
-    if (pIdx + 1 !== len) {
-        quickSortImp(A, pIdx + 1, len - pIdx + 1);
+    choosePivot(A, l, r);
+    const pIdx = partitionArray(A, l, r);
+    quickSortImp(A, l, pIdx - 1);
+    if (pIdx + 1 <= r) {
+        quickSortImp(A, pIdx + 1, r);   
     }
 }
 
 export default function quickSort(input: number[]): number[] {
-    quickSortImp(input, 0, input.length);
+    quickSortImp(input, 0, input.length - 1);
     return input;
 }
