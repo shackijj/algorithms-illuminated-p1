@@ -9,7 +9,10 @@ conan_basic_setup()
 include_directories ("${PROJECT_SOURCE_DIR}/add")
 add_subdirectory (add) 
 
+include_directories ("${PROJECT_SOURCE_DIR}/qsort")
+add_subdirectory (qsort) 
+
 file(GLOB SOURCE_FILES test/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} add)
+target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} add qsort)
