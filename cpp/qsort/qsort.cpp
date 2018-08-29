@@ -22,18 +22,22 @@ int partitionArray(int array[], int l, int r) {
     return i - 1;
 }
 
-void qsortImp(int array[], int l, int r) {
+int qsortImp(int array[], int l, int r) {
     if (l >= r) {
-        return;
+        return 0;
     }
+    int len = r - l + 1;
+    int count = len - 1;
     choosePivot(array, l, r);
     int pivotIdx = partitionArray(array, l, r);
-    qsortImp(array, l, pivotIdx - 1);
+    count += qsortImp(array, l, pivotIdx - 1);
     if (pivotIdx + 1 <= r) {
-        qsortImp(array, pivotIdx + 1, r);
+        count += qsortImp(array, pivotIdx + 1, r);
     }
+
+    return count;
 }
 
-void qsort(int array[], int len) {
-    qsortImp(array, 0, len - 1);
+int qsort(int array[], int len) {
+    return qsortImp(array, 0, len - 1);
 }

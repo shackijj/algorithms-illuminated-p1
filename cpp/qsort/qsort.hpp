@@ -1,1 +1,1 @@
-void qsort(int array[], int len);
+int qsort(int array[], int len);
