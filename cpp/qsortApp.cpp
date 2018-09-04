@@ -3,14 +3,10 @@
 #include <iostream>
 
 using namespace std;
-
 int main()
-{
-    int len;
-    cin >> len;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    
-    vector<int> lines(len);
+{   
+    int len = 10000;
+    int lines [len];
 
     for (int i = 0; i < len; i++) {
         int n;
@@ -20,9 +16,7 @@ int main()
         lines[i] = n;
     }
 
-    for (int i = 0; i < len; i++) {
-        cout << "idx " << i << " value: " << lines[i] << "\n";
-    }
-
+    int count = qsort(lines, len);
+    cout << count << "\n";
     return 0;
 }
