@@ -21,19 +21,21 @@ function choosePivot(A: number[], l: number, r: number) {
     swap(A, l, index);
 }
 
-function quickSortImp(A: number[], l: number, r: number) {
+function quickSortImp(A: number[], l: number, r: number): number {
     if (l >= r) {
-        return;
+        return 0;
     }
     choosePivot(A, l, r);
     const pIdx = partitionArray(A, l, r);
-    quickSortImp(A, l, pIdx - 1);
+    let len = r - l + 1;
+    len += quickSortImp(A, l, pIdx - 1);
     if (pIdx + 1 <= r) {
-        quickSortImp(A, pIdx + 1, r);   
+        return len + quickSortImp(A, pIdx + 1, r);   
     }
+    return len;
 }
 
 export default function quickSort(input: number[]): number[] {
-    quickSortImp(input, 0, input.length - 1);
+    const len = quickSortImp(input, 0, input.length - 1);
     return input;
 }
