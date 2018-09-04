@@ -20,3 +20,4 @@ target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} add qsort)
 # QuickSort
 
 add_executable(qsortApp qsortApp.cpp)
+target_link_libraries(qsortApp qsort)
