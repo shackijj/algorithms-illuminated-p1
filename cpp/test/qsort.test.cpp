@@ -4,11 +4,11 @@
 
 TEST(qsortTest, ArrayWithDescentElement) {
     int array1[] = {1, 2, 3};
-    ASSERT_EQ(qsort(array1, 3), 3);
+    qsort(array1, 3);
     ASSERT_THAT(array1, testing::ElementsAre(1, 2, 3));
 
     int array2[] = {3, 2, 1, 5};
-    ASSERT_EQ(qsort(array2, 4), 4);
+    qsort(array2, 4);
     ASSERT_THAT(array2, testing::ElementsAre(1, 2, 3, 5));
 }
 
