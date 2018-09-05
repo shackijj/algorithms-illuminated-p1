@@ -4,9 +4,27 @@ void swap(int array[], int i, int j) {
     array[j] = temp;
 }
 
-void choosePivot(int array[], int l, int r) {
-    int index = l;
-    swap(array, l, index);
+int choosePivot(int array[], int l, int r) {
+    int first = array[l];
+    int last = array[r];
+    int len = r - l + 1;
+    int middleIdx;
+    if (len <= 2) {
+        return l;
+    }
+    if (len % 2 == 0) {
+        middleIdx = l + (len / 2) - 1;
+    } else {
+        middleIdx = l + (int) (len / 2); // floor
+    }
+    int middle = array[middleIdx];
+    if ((first < middle && middle < last) || (last < middle && middle < first)) {
+        return middleIdx;
+    } else if ((middle < first && first < last) || (last < first && first < middle)) {
+        return l;
+    } else {
+        return r;
+    }
 }
 
 int partitionArray(int array[], int l, int r) {
@@ -28,8 +46,9 @@ int qsortImp(int array[], int l, int r) {
     }
     int len = r - l + 1;
     int count = len - 1;
-    choosePivot(array, l, r);
-    int pivotIdx = partitionArray(array, l, r);
+    int pivotIdx = choosePivot(array, l, r);
+    swap(array, l, pivotIdx);
+    pivotIdx = partitionArray(array, l, r);
     count += qsortImp(array, l, pivotIdx - 1);
     if (pivotIdx + 1 <= r) {
         count += qsortImp(array, pivotIdx + 1, r);
