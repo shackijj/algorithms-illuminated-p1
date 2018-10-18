@@ -25,7 +25,7 @@ class AdjList {
     public getVerticesCount(): number {
         return this.verticesCount;
     }
-    public contractEdge(idx: number) {
+    public contractEdge(idx: number = this._getRandomEdgeIdx()) {
         if (this.edges[idx] === null) {
             throw new Error('Trying to contract a deleted edge');
         }
@@ -39,6 +39,7 @@ class AdjList {
         const v1 = this.vertices[v1idx] as number[];
         const v2 = this.vertices[v2idx] as number[];
         const superVertex = v1.concat(v2).filter((edge) => deletedEdgeNum !== edge);
+        const superVertex = v1.filter((edge) => deletedEdgeNum !== edge);
         this.vertices[v2idx] = null;
         this.vertices[v1idx] = superVertex;
         this.verticesCount--;
@@ -51,6 +52,16 @@ class AdjList {
             }
         }
         // merge edges for the v1
+    }
+    private _getRandomEdgeIdx(): number {
+        let indexes: number[] = [];
+        this.edges.forEach((val, idx) => {
+            if (val !== null) {
+                indexes.push(idx);
+            }
+        });
+        const len = indexes.length;
+        return indexes[Math.floor(Math.random() * (len - 1))];
     }
     private _sortIfNotNull(graphEl: Edge | Vertex) {
         if (graphEl !== null) {
@@ -100,11 +111,32 @@ class AdjList {
                 let newEdgeNum = newEdgeIdx + 1;
                 let newEdge = [vertexNum, adjVertexNum];
                 this.edges[newEdgeIdx] = newEdge;
-                vertex.push(newEdgeNum);
+                (vertex as number[]).push(newEdgeNum);
                 adjVertex.push(newEdgeNum);
             }
         }
     }
 }
 
-export {AdjList}
+function kargerMinCut(adjMatrixStr: string): number {
+    let adjList = new AdjList(adjMatrixStr);
+    const timesToRun = Math.pow(adjList.getVerticesCount(), 3)
+    let min = null;
+    for(let i = 0; i < timesToRun; i++) {
+        while(adjList.getVerticesCount() > 2) {
+            adjList.contractEdge();
+        }
+        let curCount = adjList.getEdgeCount();
+        if (min === null) {
+            min = curCount
+        } else {
+            if (curCount < min) {
+                min = curCount;
+            }
+        }
+        adjList = new AdjList(adjMatrixStr)
+    }
+    return <number> min;
+}
+
+export {AdjList, kargerMinCut}
