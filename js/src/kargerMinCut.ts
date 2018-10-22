@@ -38,8 +38,7 @@ class AdjList {
         // here should be a security check
         const v1 = this.vertices[v1idx] as number[];
         const v2 = this.vertices[v2idx] as number[];
-        const superVertex = v1.concat(v2).filter((edge) => deletedEdgeNum !== edge);
-        const superVertex = v1.filter((edge) => deletedEdgeNum !== edge);
+        let superVertex = v1.concat(v2).filter((edge) => deletedEdgeNum !== edge);
         this.vertices[v2idx] = null;
         this.vertices[v1idx] = superVertex;
         this.verticesCount--;
