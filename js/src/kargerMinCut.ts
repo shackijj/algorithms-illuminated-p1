@@ -38,6 +38,9 @@ class AdjList {
         // here should be a security check
         const v1 = this.vertices[v1idx] as number[];
         const v2 = this.vertices[v2idx] as number[];
+        if (!Array.isArray(v1) || !Array.isArray(v2)) {
+            throw new Error('a vertex cant be null');
+        }
         let superVertex = v1.concat(v2).filter((edge) => deletedEdgeNum !== edge);
         this.vertices[v2idx] = null;
         this.vertices[v1idx] = superVertex;
