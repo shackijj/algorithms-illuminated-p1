@@ -2,16 +2,35 @@ type Edge = number[] | null;
 type Vertex = number[] | null;
 
 class AdjList {
+    static fromString(serialized: string): AdjList {
+        return new AdjList(serialized, true);
+    }
     private edges: Edge[];
     private vertices: Vertex[];
     private edgeCount: number;
     private verticesCount: number;
-    constructor(str: string) {
+    constructor(str: string, serialized: boolean = false) {
         this.edges = [];
         this.vertices = [];
         this.edgeCount = 0;
         this.verticesCount = 0;
-        this._parseGraphString(str);
+        if (serialized) {
+            const obj = JSON.parse(str);
+            this.edges = obj.edges;
+            this.vertices = obj.vertices;
+            this.edgeCount = obj.edgeCount;
+            this.verticesCount = obj.verticesCount;
+        } else {
+            this._parseGraphString(str);
+        }
+    }
+    public serialize(): string {
+        return JSON.stringify({
+            edges: this.edges,
+            vertices: this.vertices,
+            edgeCount: this.edgeCount,
+            verticesCount: this.verticesCount
+        })
     }
     public toString(): string {
         const toJson = JSON.stringify;
@@ -30,6 +49,7 @@ class AdjList {
             throw new Error('Trying to contract a deleted edge');
         }
         const [v1num, v2num] = this.edges[idx] as number[];
+        console.log('EDGE', this.edges[idx]);
         this.edges[idx] = null;
         const deletedEdgeNum = idx + 1;
         this.edgeCount--;
@@ -41,7 +61,10 @@ class AdjList {
         if (!Array.isArray(v1) || !Array.isArray(v2)) {
             throw new Error('a vertex cant be null');
         }
-        let superVertex = v1.concat(v2).filter((edge) => deletedEdgeNum !== edge);
+        v2.forEach((edge) => {
+            v1.push(edge)
+        })
+        let superVertex = v1.filter((edge) => deletedEdgeNum !== edge);
         this.vertices[v2idx] = null;
         this.vertices[v1idx] = superVertex;
         this.verticesCount--;
@@ -51,6 +74,13 @@ class AdjList {
                 const edge = this.edges[edgeNum - 1] as number[];
                 const oldVertexIndex = edge.findIndex(vertexNum => vertexNum === v2num);
                 edge[oldVertexIndex] = v1num;
+                // self-loop
+                if (edge[0] === v1num && edge[1] === v1num) {
+                    this.edges[edgeNum - 1] = null;
+                    this.edgeCount--;
+                    superVertex = superVertex.filter(curEdge => curEdge !== edgeNum)
+                    this.vertices[v1idx] = superVertex;
+                }
             }
         }
         // merge edges for the v1
@@ -122,13 +152,17 @@ class AdjList {
 
 function kargerMinCut(adjMatrixStr: string): number {
     let adjList = new AdjList(adjMatrixStr);
+    const serialized = adjList.serialize();
+
     const timesToRun = Math.pow(adjList.getVerticesCount(), 3)
     let min = null;
     for(let i = 0; i < timesToRun; i++) {
         while(adjList.getVerticesCount() > 2) {
             adjList.contractEdge();
         }
+
         let curCount = adjList.getEdgeCount();
+        console.log(i, timesToRun, min, curCount);
         if (min === null) {
             min = curCount
         } else {
@@ -136,7 +170,7 @@ function kargerMinCut(adjMatrixStr: string): number {
                 min = curCount;
             }
         }
-        adjList = new AdjList(adjMatrixStr)
+        adjList = AdjList.fromString(serialized);
     }
     return <number> min;
 }

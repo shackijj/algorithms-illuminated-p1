@@ -74,7 +74,7 @@ describe('AdjList', () => {
     });
 
     describe('given other simple graph', () => {
-        beforeEach(() => {
+        beforeAll(() => {
             const input = [
                 '1 2 3 4',
                 '2 1 4',
@@ -99,8 +99,8 @@ describe('AdjList', () => {
             expect(adjList.getEdgeCount()).toEqual(5);
         });
 
-        describe('given that 2nd edge is contracted', () => {
-            beforeEach(() => {
+        describe('given that 3rd edge is contracted', () => {
+            beforeAll(() => {
                 adjList.contractEdge(2);
             });
 
@@ -115,6 +115,25 @@ describe('AdjList', () => {
 
             it('should have 4 edges', () => {
                 expect(adjList.getEdgeCount()).toEqual(4);
+            });
+
+            describe('given that 1st edge is contracted', () => {
+                beforeAll(() => {
+                    adjList.contractEdge(0);
+                });
+    
+                it('should merge vertices 1 and 4 and delete self-loops', () => {
+                    expect(adjList.toString()).toEqual(
+                        'vertices: [[2,5],null,[2,5],null] edges: [null,[1,3],null,null,[1,3]]');
+                });
+    
+                it('should have 3 vertices', () => {
+                    expect(adjList.getVerticesCount()).toEqual(2);
+                });
+    
+                it('should have 4 edges', () => {
+                    expect(adjList.getEdgeCount()).toEqual(2);
+                });
             });
         });
     });
